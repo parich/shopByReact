@@ -60,7 +60,7 @@ a:hover{
 }
 ul {
   padding: 0;
-  margin: 0;
+  margin: 1rem;
   list-style-type: none;
 }
 li{
@@ -160,6 +160,23 @@ img.large {
 .success {
   color: #20a020;
 }
-.error {
+.danger {
   color: #a02020;
 }
+
+.alert{
+  padding: 1rem;
+  border: 0.1rem solid transparent;
+  border-radius: 0.5rem;
+}
+
+.alert-info {
+  color: #2020a0;
+  background-color: #e0e0ff;
+}
+
+.alert-danger {
+  color: #a02020;
+  background-color: #ffe0e0e0;
+}
+
