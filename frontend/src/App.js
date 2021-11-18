@@ -1,10 +1,12 @@
-import {Route} from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import ProductScreen from './screens/ProductScreen';
 import HomeScreen from './screens/HomeScreen';
+import { BrowserRouter } from 'react-router-dom';
+
 
 function App() {
   return (
-
+    <BrowserRouter>
       <div className="grid-container">
         <header className="row">
           <div>
@@ -19,14 +21,14 @@ function App() {
 
         <main>
 
-            <Route path="/product/:id" component={ProductScreen}></Route>
-            <Route path="/" component={HomeScreen} exact></Route>
+          <Route path="/product/:id" component={ProductScreen}></Route>
+          <Route path="/" component={HomeScreen} exact></Route>
 
         </main>
 
         <footer className="row center">All right resered</footer>
       </div>
-
+    </BrowserRouter>
   );
 }
 
