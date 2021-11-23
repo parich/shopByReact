@@ -21,7 +21,6 @@ export default function ProductScreen(props) {
         props.history.push(`/cart/${productId}?qty=${qty}`);
     }
 
-
     return (
 
         <div>
@@ -90,8 +89,6 @@ export default function ProductScreen(props) {
 
                                             )
                                         }
-
-
 
                                     </ul>
 

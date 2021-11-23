@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Product from '../components/product';
+import Product from '../components/Product';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { useSelector, useDispatch } from 'react-redux';
@@ -12,7 +12,7 @@ export default function HomeScreen() {
 
     useEffect(() => {
         dispatch(listProducts());
-    }, []);
+    }, [dispatch]);
 
     return (
         <div>
