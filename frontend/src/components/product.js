@@ -8,7 +8,7 @@ export default function Product(props) {
     <div key={product._id} className="card">
       <Link to={`/product/${product._id}`}>
         <img
-          class="medium"
+          className="medium"
           src={product.image}
           alt={product.name} />
       </Link>

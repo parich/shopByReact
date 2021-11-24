@@ -1,7 +1,23 @@
+import bcrypt from 'bcryptjs';
+
 const data = {
+    users: [
+        {
+            name: "parich",
+            email: 'parich.suri@gmail.com',
+            password: bcrypt.hashSync('1234', 8),
+            isAdmin: false,
+        },
+        {
+            name: "suriya",
+            email: 'suriya@gmail.com',
+            password: bcrypt.hashSync('1234', 8),
+            isAdmin: false,
+        },
+    ],
     products: [
         {
-            _id: '1',
+
             name: 'TOYOYA vigo1',
             category: 'vigo',
             image: '/images/product-1.jpg',
@@ -13,7 +29,7 @@ const data = {
             description: 'TOYOYA vigo สะอาดใหม่ สด'
         },
         {
-            _id: '2',
+
             name: 'TOYOYA vigo2',
             category: 'vigo',
             image: '/images/product-1.jpg',
@@ -25,7 +41,7 @@ const data = {
             description: 'TOYOYA vigo สะอาดใหม่ สด'
         },
         {
-            _id: '3',
+
             name: 'TOYOYA vigo3',
             category: 'vigo',
             image: '/images/product-1.jpg',
@@ -37,7 +53,7 @@ const data = {
             description: 'TOYOYA vigo สะอาดใหม่ สด'
         },
         {
-            _id: '4',
+
             name: 'TOYOYA vigo4',
             category: 'vigo',
             image: '/images/product-1.jpg',
