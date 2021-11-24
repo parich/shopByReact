@@ -6,12 +6,13 @@ import userRouter from './routers/userRouter.js';
 
 dotenv.config();
 
-
 const app = express();
 
-mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost:27017/shop', {
+const URL = process.env.MONGODB_URL || 'mongodb://localhost:27017/shop';
+mongoose.connect(URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    //useCreateIndex: true
 });
 
 /* fuction เดิมเริ่มต้นที่เรียกผ่าน ไฟล์ data.js ทีมี id ในไฟล์  #เปลีนนไปเรียกผ่าน productRouter แทน
