@@ -7,6 +7,17 @@ import userRouter from './routers/userRouter.js';
 dotenv.config();
 
 const app = express();
+//app.use(express.json()); ต้องเรียกก่อน route ไม่งั้นส่ง require.body undefind
+app.use(express.json({ limit: '20mb' }));
+app.use(express.urlencoded({ extended: true, limit: '20mb' }));
+
+app.use('/api/users', userRouter);
+app.use('/api/products', productRouter);
+
+//Middleware แสดง err ทุกอย่างที่เกิดขึ้นกับ app
+app.use((err, req, res, next) => {
+    res.status(500).send({ message: err.message })
+});
 
 const URL = process.env.MONGODB_URL || 'mongodb://localhost:27017/shop';
 mongoose.connect(URL, {
@@ -29,19 +40,8 @@ app.get('/api/products', (req, res) => {
     res.send(data.products);
 });
 */
-
-app.use('/api/users', userRouter);
-app.use('/api/products', productRouter);
-
-
 app.get('/', (req, res) => {
     res.send('Server is Ready');
-});
-
-
-//Middleware แสดง err ทุกอย่างที่เกิดขึ้นกับ app
-app.use((err, req, res, next) => {
-    res.status(500).send({ message: err.message })
 });
 
 const port = process.env.PORT || 4000;
