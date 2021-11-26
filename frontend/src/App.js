@@ -3,14 +3,25 @@ import ProductScreen from './screens/ProductScreen';
 import HomeScreen from './screens/HomeScreen';
 import { BrowserRouter } from 'react-router-dom';
 import CartScreen from './screens/CartScreen';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SigninScreen from './screens/SigninScreen';
+import { signout } from './actions/userActions';
 
 
 function App() {
 
   const cart = useSelector(state => state.cart);
   const { cartItems } = cart;
+  //เรียกข้อมูลที่อยู่ใน Redux .store ที่ชื่อ useSignin มาเก็บใน userSignin
+  const userSignin = useSelector((state) => state.userSignin);
+  //เรียกใช้เฉพาะ userInfo ที่อยู่ใน Redux .store
+  const { userInfo } = userSignin;
+
+  const dispatch = useDispatch();
+
+  const signoutHandler = () => {
+    dispatch(signout());
+  }
 
   return (
     <BrowserRouter>
@@ -23,7 +34,17 @@ function App() {
             <Link to="/cart">Cart
               {cartItems.length > 0 && (<span className="badge">{cartItems.length}</span>)}
             </Link>
-            <Link to="/signin">Sign In</Link>
+            {userInfo ? (
+              <div className="dropdown">
+                <Link to="#">{userInfo.name} <i className="fa fa-caret-down"></i>{''}</Link>
+                <ul className="dropdown-content">
+                  <Link to="#signout" onClick={signoutHandler}>Sign Out</Link>
+                </ul>
+              </div>
+            ) : (
+              <Link to="/signin">Sign In</Link>
+
+            )}
           </div>
 
         </header>
@@ -33,7 +54,6 @@ function App() {
           <Route path="/product/:id" component={ProductScreen}></Route>
           <Route path="/" component={HomeScreen} exact></Route>
           <Route path="/signin" component={SigninScreen}></Route>
-
         </main>
 
         <footer className="row center">All right resered</footer>
