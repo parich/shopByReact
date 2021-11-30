@@ -3,6 +3,8 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { signin } from '../actions/userActions';
+import LoadingBox from '../components/LoadingBox';
+import MessageBox from '../components/MessageBox';
 
 export default function SigninScreen(props) {
     const [email, setEmail] = useState('');
@@ -13,7 +15,6 @@ export default function SigninScreen(props) {
     // split('=')[1] คือหลัง = 
     // ถ้ามีการส่งค่ามา (props.location.search) ให้ไป shipping ถ้าไม่มีการส่งค่ามาให้ไป /
     const redirect = props.location.search ? props.location.search.split('=')[1] : '/';
-    console.log(redirect);
 
     const userSignin = useSelector((state) => state.userSignin);
     const { userInfo, loading, error } = userSignin;
@@ -38,7 +39,10 @@ export default function SigninScreen(props) {
                 <div>
                     <h1>Signin</h1>
                 </div>
-
+                <div>
+                    {loading && <LoadingBox></LoadingBox>}
+                    {error && <MessageBox variant="danger">{error}</MessageBox>}
+                </div>
                 <div>
                     <label htmlFor="email">Email address</label>
                     <input type="email" id="email" placeholder="Enter email" required

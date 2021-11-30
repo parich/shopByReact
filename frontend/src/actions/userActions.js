@@ -6,6 +6,7 @@ export const signin = (email, password) => async (dispatch) => {
     try {
         const { data } = await axios.post('/api/users/signin', { email, password });
         dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
+        // เก็บข้อมูลใส่ Local Storage แบบถาวร localStorage.setItem(key, value) 
         localStorage.setItem('userInfo', JSON.stringify(data));
     } catch (error) {
         dispatch({
@@ -21,3 +22,8 @@ export const signout = () => (dispatch) => {
     localStorage.removeItem('cartItems');
     dispatch({ type: USER_SIGNOUT });
 };
+
+//localStorage.setItem(key, value) คือ การเก็บข้อมูลลงใน Local Storage
+//localStorage.getItem(key) คือ การเรียกใช้ข้อมูล key ของ Local Storage
+//localStorage.removeItem(key) คือ การลบข้อมูลที่ key เก็บไว้
+//localStorage.clear() คือ การลบข้อมูลทั้งหมดในโดเมน

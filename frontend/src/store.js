@@ -5,7 +5,7 @@ import { productDetailsReducer, productListReducer } from "./reducers/productRed
 import { userSigninReducer } from './reducers/userReducers';
 
 const initialStare = {
-    // เก็บข้อมูลไว้ใน localstorage เมื่อมีการรีโหลดหน้าเว็บ ข้อมูลจะไม่หายจาก Redux store
+    //เริ่ม get ข้อมูล localstorage เมือมีการโหลดหน้าเว็บใหม่
     userSignin: {
         userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null,
     },
