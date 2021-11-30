@@ -2,7 +2,7 @@ import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { cartReducers } from './reducers/cartReducers';
 import { productDetailsReducer, productListReducer } from "./reducers/productReducers";
-import { userSigninReducer } from './reducers/userReducers';
+import { userRegisterReducer, userSigninReducer } from './reducers/userReducers';
 
 const initialStare = {
     //เริ่ม get ข้อมูล localstorage เมือมีการโหลดหน้าเว็บใหม่
@@ -17,7 +17,8 @@ const reducer = combineReducers({
     productList: productListReducer,
     productDetails: productDetailsReducer,
     cart: cartReducers,
-    userSignin: userSigninReducer
+    userSignin: userSigninReducer,
+    userRegister: userRegisterReducer
 
 })
 
