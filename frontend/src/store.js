@@ -11,7 +11,9 @@ const initialStare = {
     },
     cart: {
         cartItems: localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : [],
-    }
+        shippingAddress: localStorage.getItem('shippingAddress') ? JSON.parse(localStorage.getItem('shippingAddress')) : {},
+        paymentMethod: 'PayPal',
+    },
 };
 const reducer = combineReducers({
     productList: productListReducer,
@@ -19,7 +21,6 @@ const reducer = combineReducers({
     cart: cartReducers,
     userSignin: userSigninReducer,
     userRegister: userRegisterReducer
-
 })
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
