@@ -5,6 +5,8 @@ import { isAuth } from '../utils.js';
 
 const orderRouter = express.Router();
 
+//http://localhost:4000/api/orders{order}
+//# METHOD POST
 orderRouter.post(
     '/',
     isAuth,
@@ -26,6 +28,21 @@ orderRouter.post(
             res
                 .status(201)
                 .send({ message: 'New Order Created', order: createdOrder });
+        }
+    })
+);
+
+//# URL http://localhost:4000/api/orders/id
+//# METHOD GET
+orderRouter.get(
+    '/:id',
+    isAuth,
+    expressAsyncHandler(async (req, res) => {
+        const order = await Order.findById(req.params.id);
+        if (order) {
+            res.send(order);
+        } else {
+            res.status(404).send({ message: 'Order Not Found' });
         }
     })
 );
