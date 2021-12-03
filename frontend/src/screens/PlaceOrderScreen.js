@@ -1,26 +1,52 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
+import { createOrder } from '../actions/orderActions';
 import CheckoutSteps from '../components/CheckoutSteps'
+import { ORDER_CREATE_RESET } from '../constants/orderConstants';
+import LoadingBox from '../components/LoadingBox';
+import MessageBox from '../components/MessageBox';
 
 
 export default function PlaceOrderScreen(props) {
-    const cart = useSelector((state => state.cart))
+
+    const cart = useSelector((state) => state.cart)
+    //ถ้ายังไม่มีข้อมูลใน store ให้ redirect ไป /payment
     if (!cart.paymentMethod) {
         props.history.push('/payment');
     }
+    //**2 เรียนใช้ข้อมูลใน state.orderCreate ที่ถูกเพิ่มข้อมูล combineReducers ในไฟล์ store
+    const orderCreate = useSelector((state) => state.orderCreate);
+    // ข้อมูลจากการ dispatch ที่ placeOrderHandler
+    // loading = ORDER_CREATE_SUCCESS, RDER_CREATE_REQUEST, ORDER_CREATE_FAIL
+    // success = ORDER_CREATE_SUCCESS,
+    // error = ORDER_CREATE_FAIL,
+    // order = ORDER_CREATE_SUCCESS,
+    const { loading, success, error, order } = orderCreate;
 
-    const toPrice = (num) => Number(num.toFixed(2));
+    //คำนวนราคา 
+    const toPrice = (num) => Number(num.toFixed(2)); // fun ทศนิยม 2 ตำแหน่ง
     cart.itemsPrice = toPrice(
-        cart.cartItems.reduce((a, c) => a + c.qty * c.price, 0)
+        cart.cartItems.reduce((a, c) => a + c.qty * c.price, 0) // loop รวมราคาแต่ละรายการ 
     );
-
     cart.shippingPrice = cart.itemsPrice > 100 ? toPrice(0) : toPrice(10);
     cart.taxPrice = toPrice(0.15 * cart.itemsPrice);
     cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
+
+    const dispatch = useDispatch();
+    //**1  dispatch 
+    //  orderActions.js <=>|constants|<=> orderReducers.js => 
+    //  (combineReducers) stort.js ออกเป็น state ชือ orderCreate
     const placeOrderHandler = () => {
-        // TODO: dispatch place order action
+        dispatch(createOrder({ ...cart, orderItems: cart.cartItems }));
     };
+
+    useEffect(() => {
+        if (success) {
+            props.history.push(`/order/${order._id}`);
+            dispatch({ type: ORDER_CREATE_RESET });
+        }
+    }, [dispatch, order, props.history, success]);
 
     return (
         <div>
@@ -53,8 +79,6 @@ export default function PlaceOrderScreen(props) {
                         <li>
                             <div className="card card-body">
                                 <h2>Order Items</h2>
-
-
 
                                 <ul>
                                     {cart.cartItems.map((item) => (
@@ -118,6 +142,8 @@ export default function PlaceOrderScreen(props) {
                                     Place Order
                                 </button>
                             </li>
+                            {loading && <LoadingBox></LoadingBox>}
+                            {error && <MessageBox variant="danger">{error}</MessageBox>}
                         </ul>
                     </div>
                 </div>

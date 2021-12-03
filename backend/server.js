@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import productRouter from './routers/productRouter.js';
 import userRouter from './routers/userRouter.js';
+import orderRouter from './routers/orderRouter.js';
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ app.use(express.urlencoded({ extended: true, limit: '20mb' }));
 
 app.use('/api/users', userRouter);
 app.use('/api/products', productRouter);
+app.use('/api/orders', orderRouter);
 
 //Middleware แสดง err ทุกอย่างที่เกิดขึ้นกับ app
 app.use((err, req, res, next) => {
