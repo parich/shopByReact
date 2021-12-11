@@ -3,9 +3,10 @@ import { PayPalButton } from 'react-paypal-button-v2';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { detailsOrder } from '../actions/orderActions';
+import { detailsOrder, payOrder } from '../actions/orderActions';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
+import { ORDER_PAY_RESET } from '../constants/orderConstants';
 
 
 export default function OrderScreen(props) {
@@ -15,9 +16,16 @@ export default function OrderScreen(props) {
     const orderDetails = useSelector((state) => state.orderDetails);
     const { order, loading, error } = orderDetails;
 
-    const dispatch = useDispatch();
-    useEffect(() => {
+    const orderPay = useSelector((state) => state.orderPay);
+    const {
+        loading: loadingPay,
+        error: errorPay,
+        success: successPay
+    } = orderPay;
 
+    const dispatch = useDispatch();
+
+    useEffect(() => {
         const addPayPalScript = async () => {
             const { data } = await axios.get('/api/config/paypal');
             const script = document.createElement('script');
@@ -29,7 +37,8 @@ export default function OrderScreen(props) {
             };
             document.body.appendChild(script);
         };
-        if (!order) {
+        if (!order || successPay || (order && order._id !== orderId)) {
+            dispatch({ type: ORDER_PAY_RESET });
             dispatch(detailsOrder(orderId));
         } else {
             if (!order.isPaid) {
@@ -40,15 +49,17 @@ export default function OrderScreen(props) {
                 }
             }
         }
-    }, [dispatch, order, orderId, sdkReady]);
+    }, [dispatch, order, orderId, sdkReady, successPay]);
 
-    const successPaymentHandler = () => {
-        // TODO: dispatch pay order
+    const successPaymentHandler = (paymentResult) => {
+
+        // dispatch ไป payOrder ส่ง order และ paymetResultจากปุ่มpaypal
+        dispatch(payOrder(order, paymentResult))
     };
 
     // if statment // ถ้ามี loadingbox  ถ้ามี error ต่อกันไป
     return loading ? (<LoadingBox></LoadingBox>) : error ? (<MessageBox variant="danger"></MessageBox>) : (
-        <div>
+        <>
             <h1>Order NO: {order._id}</h1>
             <div className="row top">
                 <div className="col-2">
@@ -78,7 +89,7 @@ export default function OrderScreen(props) {
                                     <strong>Method:</strong> {order.paymentMethod}
                                 </p>
                                 {order.isPaid ? (
-                                    <MessageBox variant="success">Paid at {order.Paid}</MessageBox>
+                                    <MessageBox variant="success">Paid at {order.paidAt}</MessageBox>
                                 ) : (
                                     <MessageBox variant="danger">Not Paid</MessageBox>
                                 )}
@@ -148,10 +159,17 @@ export default function OrderScreen(props) {
                                     {!sdkReady ? (
                                         <LoadingBox></LoadingBox>
                                     ) : (
-                                        <PayPalButton
-                                            amount={order.totalPrice}
-                                            onSuccess={successPaymentHandler}
-                                        ></PayPalButton>
+                                        <>
+                                            {errorPay && (
+                                                <MessageBox variant="danger">{errorPay}</MessageBox>
+                                            )}
+                                            {loadingPay && <LoadingBox></LoadingBox>}
+
+                                            <PayPalButton
+                                                amount={order.totalPrice}
+                                                onSuccess={successPaymentHandler}
+                                            ></PayPalButton>
+                                        </>
                                     )}
                                 </li>
                             )}
@@ -160,6 +178,6 @@ export default function OrderScreen(props) {
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
