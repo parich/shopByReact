@@ -11,7 +11,7 @@ orderRouter.get(
     '/mine',
     isAuth,
     expressAsyncHandler(async (req, res) => {
-        console.log(req)
+        //console.log(req)
         const orders = await Order.find({ user: req.user._id });
         res.send(orders);
     })

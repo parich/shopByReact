@@ -12,6 +12,7 @@ export default function ProfileScreen(props) {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
+    //เรียกใช้ userSignin state
     const userSignin = useSelector((state) => state.userSignin);
     const { userInfo } = userSignin;
 
