@@ -27,7 +27,7 @@ export default function ProductEditScreen(props) {
             dispatch({ type: PRODUCT_UPDATE_RESET });
             props.history.push('/productlist');
         }
-        if (!product || product._id !== productId) {
+        if (!product || product._id !== productId || successUpdate) {
             dispatch(detailsProduct(productId));
         } else {
             setName(product.name);
