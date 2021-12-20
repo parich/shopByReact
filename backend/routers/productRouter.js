@@ -56,7 +56,6 @@ productRouter.post(
     })
 );
 
-
 productRouter.put(
     '/:id',
     isAuth,
