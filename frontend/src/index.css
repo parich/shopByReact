@@ -127,9 +127,19 @@ a.brand{
 .row.center {
   justify-content: center;
 }
-.row.top{
+
+.row.items{
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.row.top {
   align-items: flex-start;
 }
+.row.start {
+  justify-content: flex-start;
+}
+
 .col-1{
   flex: 1 1 25rem;
 }
@@ -156,7 +166,7 @@ img.large {
   width: 100%;
 }
 
-/* card */
+/* Card */
 .card {
   border: 0.1rem #c0c0c0 solid;
   background-color: #f8f8f8;
