@@ -1,19 +1,34 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { listUsers } from '../actions/userActions';
+import { deleteUser, listUsers } from '../actions/userActions';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
+import { USER_DELETE_RESET } from '../constants/userConstants';
 
 export default function UserListScreen() {
     const userList = useSelector((state) => state.userList);
     const { loading, error, users } = userList;
+
+    const userDelete = useSelector((state) => state.userDelete);
+    const { loading: loadingDelete, error: errorDelete, success: successDetete } = userDelete;
+
     const dispatch = useDispatch();
     useEffect(() => {
+        dispatch({ type: USER_DELETE_RESET });
         dispatch(listUsers());
-    }, [dispatch]);
+    }, [dispatch, successDetete,]);
+
+    const deleteHandler = (user) => {
+        if (window.confirm('Are you sure?')) {
+            dispatch(deleteUser(user._id));
+        }
+    }
     return (
         <div>
             <h1>Users</h1>
+            {loadingDelete && <LoadingBox></LoadingBox>}
+            {errorDelete && <MessageBox variant='danger'>{errorDelete}</MessageBox>}
+            {successDetete && <MessageBox variant='success'>User Deleted Success</MessageBox>}
             {loading ? (
                 <LoadingBox></LoadingBox>
             ) : error ? (
@@ -39,8 +54,8 @@ export default function UserListScreen() {
                                 <td>{user.isSeller ? 'YES' : ' NO'}</td>
                                 <td>{user.isAdmin ? 'YES' : 'NO'}</td>
                                 <td>
-                                    <button>Edit</button>
-                                    <button>Delete</button>
+                                    <button type='button' className='small'>Edit</button>
+                                    <button type='button' className='small' onClick={() => deleteHandler(user)}>Delete</button>
                                 </td>
                             </tr>
                         ))}
