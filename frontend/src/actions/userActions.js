@@ -10,6 +10,7 @@ import {
     USER_LIST_SUCCESS,
     USER_REGISTER_FAIL,
     USER_REGISTER_REQUEST,
+    USER_REGISTER_RESET,
     USER_RSEGISTER_SUCCESS,
     USER_SIGNIN_FAIL,
     USER_SIGNIN_REQUEST,
@@ -62,6 +63,7 @@ export const signout = () => (dispatch) => {
     localStorage.removeItem('cartItems');
     localStorage.removeItem('shippingAddress');
     dispatch({ type: USER_SIGNOUT });
+    dispatch({ type: USER_REGISTER_RESET })
 };
 
 export const detailsUser = (userId) => async (dispatch, getState) => {
