@@ -8,24 +8,11 @@ import { isAdmin, isAuth, isSellerOrAdmin } from '../utils.js';
 const productRouter = express.Router();
 
 productRouter.get(
-    '/:id',
+    '/',
     expressAsyncHandler(async (req, res) => {
         const seller = req.query.seller || '';
         const sellerFilter = seller ? { seller } : {};
-        console.log(sellerFilter);
-
-        const product = await Product.findById({ ...sellerFilter });
-        if (product) {
-            res.send(product);
-        } else {
-            res.status(404).send({ message: 'Product not found' });
-        }
-    }));
-
-productRouter.get(
-    '/',
-    expressAsyncHandler(async (req, res) => {
-        const product = await Product.find({});
+        const product = await Product.find({ ...sellerFilter });
         res.send(product);
     })
 );
@@ -36,6 +23,21 @@ productRouter.get(
         //await Product.remove({}); //#ลบทั้งหมดก่อน
         const createdProducts = await Product.insertMany(data.products);
         res.send({ createdProducts });
+    })
+);
+
+productRouter.get(
+    '/:id',
+    expressAsyncHandler(async (req, res) => {
+        const product = await Product.findById(req.params.id).populate(
+            'seller',
+            'seller.name seller.logo seller.rating seller.numReviews'
+        );
+        if (product) {
+            res.send(product);
+        } else {
+            res.status(404).send({ message: 'Product Not Found' });
+        }
     })
 );
 

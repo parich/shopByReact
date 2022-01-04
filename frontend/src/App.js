@@ -121,7 +121,6 @@ function App() {
           <SellerRoute path='/productlist/seller' component={ProductListScreen}></SellerRoute>
           <SellerRoute path='/orderlist/seller' component={OrderListScreen}></SellerRoute>
 
-
         </main>
 
         <footer className="row center">All right resered</footer>

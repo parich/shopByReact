@@ -7,16 +7,20 @@ const orderRouter = express.Router();
 
 //http://localhost:4000/api/orders/
 //# METHOD GET
-orderRouter.get('/', isAuth, isSellerOrAdmin, expressAsyncHandler(async (req, res) => {
-    const seller = req.query.seller || '';
-    const sellerFilter = seller ? { seller } : {};
+orderRouter.get(
+    '/',
+    isAuth,
+    isSellerOrAdmin,
+    expressAsyncHandler(async (req, res) => {
+        const seller = req.query.seller || '';
+        const sellerFilter = seller ? { seller } : {};
 
-    const orders = await Order.find({ ...sellerFilter }).populate(
-        'user',
-        'name'
-    );
-    res.send(orders);
-}));
+        const orders = await Order.find({ ...sellerFilter }).populate(
+            'user',
+            'name'
+        );
+        res.send(orders);
+    }));
 
 
 //http://localhost:4000/api/orders/mine

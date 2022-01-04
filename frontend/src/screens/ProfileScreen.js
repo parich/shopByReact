@@ -12,9 +12,9 @@ export default function ProfileScreen(props) {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
-    const [sellerName, setSellerName] = useState('')
-    const [sellerLogo, setSellerLogo] = useState('')
-    const [sellerDescription, setSellerDescription] = useState('')
+    const [sellerName, setSellerName] = useState('');
+    const [sellerLogo, setSellerLogo] = useState('');
+    const [sellerDescription, setSellerDescription] = useState('');
 
 
     //เรียกใช้ userSignin state
@@ -41,9 +41,6 @@ export default function ProfileScreen(props) {
                 setSellerDescription(user.seller.description);
             }
         }
-        return () => {
-            dispatch(detailsUser(userInfo._id));
-        }
     }, [dispatch, userInfo._id, user]);
 
     const submitHandler = (e) => {
@@ -52,7 +49,14 @@ export default function ProfileScreen(props) {
         if (password !== confirmPassword) {
             alert('Password and Confirm Password Are Not Matched')
         } else {
-            dispatch(updateUserProfile({ userId: user._id, name, email, password, sellerName, sellerLogo, sellerDescription }));
+            dispatch(updateUserProfile({
+                userId: user._id,
+                name, email,
+                password,
+                sellerName,
+                sellerLogo,
+                sellerDescription
+            }));
         }
     }
 
@@ -88,41 +92,44 @@ export default function ProfileScreen(props) {
                                 <label htmlFor='confirmPassword'>Confirm Password</label>
                                 <input id='confirmPassword' type='password' placeholder='Enter Confirm Password' onChange={(e) => setConfirmPassword(e.target.value)}></input>
                             </div>
+
                             {user.isSeller && (
                                 <>
                                     <h2>Seller</h2>
                                     <div>
-                                        <label htmlFor='sellerName'>Seller Name</label>
+                                        <label htmlFor="sellerName">Seller Name</label>
                                         <input
-                                            id='sellerName'
-                                            type='text'
-                                            placeholder='Enter Seller Name'
+                                            id="sellerName"
+                                            type="text"
+                                            placeholder="Enter Seller Name"
                                             value={sellerName}
                                             onChange={(e) => setSellerName(e.target.value)}
                                         ></input>
                                     </div>
                                     <div>
-                                        <label htmlFor='sellerLogo'>Seller Loge</label>
+                                        <label htmlFor="sellerLogo">Seller Logo</label>
                                         <input
-                                            id='sellerLogo'
-                                            type='text'
-                                            placeholder='Enter Seller Logo'
+                                            id="sellerLogo"
+                                            type="text"
+                                            placeholder="Enter Seller Logo"
                                             value={sellerLogo}
                                             onChange={(e) => setSellerLogo(e.target.value)}
                                         ></input>
                                     </div>
                                     <div>
-                                        <label htmlFor='sellerLogo'>Seller Description</label>
+                                        <label htmlFor="sellerDescription">Seller Description</label>
                                         <input
-                                            id='sellerDescription'
-                                            type='text'
-                                            placeholder='Enter Seller Description'
+                                            id="sellerDescription"
+                                            type="text"
+                                            placeholder="Enter Seller Description"
                                             value={sellerDescription}
                                             onChange={(e) => setSellerDescription(e.target.value)}
                                         ></input>
                                     </div>
                                 </>
                             )}
+
+
                             <div>
                                 <label />
                                 <button className='primary' type='submit'>Update</button>
