@@ -17,12 +17,16 @@ import {
     PRODUCT_UPDATE_SUCCESS,
 } from "../constants/productConstants";
 
-export const listProducts = ({ seller = '' }) => async (dispatch) => {
+export const listProducts = ({ seller = '',name = '' }) => async (dispatch) => {
+    // serler id ผู้ขาย
+    // name คือ ค้นหาสินค้า
+    // alert(seller)
     dispatch({
         type: PRODUCT_LIST_REQUEST
     })
     try {
-        const { data } = await axios.get(`/api/products?seller=${seller}`);
+        // ส่ง name และ serller id เพื่อไป filter
+        const { data } = await axios.get(`/api/products?seller=${seller}&name=${name}`);
         dispatch({
             type: PRODUCT_LIST_SUCCESS,
             payload: data

@@ -21,6 +21,9 @@ import OrderListScreen from './screens/OrderListScreen';
 import UserListScreen from './screens/UserListScreen';
 import UserEditScreen from './screens/UserEditScreen';
 import SellerRoute from './components/SellerRoute';
+import SellerScreen from './screens/SellerScreen';
+import SearchBox from './components/SearchBox';
+import SearchScreen from './screens/SearchScreen';
 
 function App() {
 
@@ -42,6 +45,9 @@ function App() {
         <header className="row">
           <div>
             <Link className="brand" to="/">shop-cart</Link>
+          </div>
+          <div>
+            <Route render={({ history }) => <SearchBox history={history}></SearchBox>}></Route>
           </div>
           <div>
             <Link to="/cart">Cart
@@ -102,6 +108,7 @@ function App() {
         </header>
 
         <main>
+          <Route path='/seller/:id' component={SellerScreen}></Route>
           <Route path="/cart/:id?" component={CartScreen}></Route>
           <Route path="/product/:id" component={ProductScreen} exact></Route>
           <AdminRoute path="/product/:id/edit/" component={ProductEditScreen} exact></AdminRoute>
@@ -113,6 +120,7 @@ function App() {
           <Route path="/placeorder" component={PlaceOrderScreen}></Route>
           <Route path="/order/:id" component={OrderScreen}></Route>
           <Route path="/orderhistory" component={OrderHistoryScreen}></Route>
+          <Route path="/search/name/:name?" component={SearchScreen} exact></Route>
           <PrivateRoute path="/profile" component={ProfileScreen}></PrivateRoute>
           <AdminRoute path="/productlist" component={ProductListScreen} exact ></AdminRoute>
           <AdminRoute path="/orderlist" component={OrderListScreen} exact ></AdminRoute>
@@ -120,7 +128,6 @@ function App() {
           <AdminRoute path="/user/:id/edit" component={UserEditScreen}></AdminRoute>
           <SellerRoute path='/productlist/seller' component={ProductListScreen}></SellerRoute>
           <SellerRoute path='/orderlist/seller' component={OrderListScreen}></SellerRoute>
-
         </main>
 
         <footer className="row center">All right resered</footer>

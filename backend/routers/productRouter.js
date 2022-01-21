@@ -10,9 +10,19 @@ const productRouter = express.Router();
 productRouter.get(
     '/',
     expressAsyncHandler(async (req, res) => {
+        // get ข้อมูลจาก url ชื่อคีย์
         const seller = req.query.seller || '';
+        const name = req.query.name || '';
+
+        // ถ้ามีให้ค่าเท่าค่าที่ส่งมา ถ้าไม่มีให้เป็นออบเจ็ตว่างๆ
         const sellerFilter = seller ? { seller } : {};
-        const product = await Product.find({ ...sellerFilter });
+        // ค้นหาแบบ LIKE ..$regex: name, $options: 'i'
+        const nameFilter = name ? { name: { $regex: name, $options: 'i' } } : {};
+
+        // นำค่ามี filter
+        const product = await Product.find({ ...sellerFilter, ...nameFilter }).populate(
+            'seller', 'seller.name seller.logo'
+        );
         res.send(product);
     })
 );

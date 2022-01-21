@@ -7,6 +7,13 @@ import { generateToken, isAdmin, isAuth } from '../utils.js';
 
 const userRouter = express.Router();
 
+userRouter.get('/top-sellers', expressAsyncHandler(async (req, res) => {
+    const topSeller = await User.find({ isSeller: true, })
+        .sort({ 'seller.rating': -1 })
+        .limit(3);
+    res.send(topSeller);
+}));
+
 //#expressAsyncHandler ยกเว้นการ async ตัวอย่างหน้าเว็บจะหมุนอยู่ตลอดเวลา เหมือนโหลดข้อมูลไม่เสร็จ
 userRouter.get('/seed', expressAsyncHandler(async (req, res) => {
     // await User.remove({});
