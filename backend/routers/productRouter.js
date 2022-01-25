@@ -13,19 +13,31 @@ productRouter.get(
         // get ข้อมูลจาก url ชื่อคีย์
         const seller = req.query.seller || '';
         const name = req.query.name || '';
+        const category = req.query.category || '';
 
         // ถ้ามีให้ค่าเท่าค่าที่ส่งมา ถ้าไม่มีให้เป็นออบเจ็ตว่างๆ
         const sellerFilter = seller ? { seller } : {};
         // ค้นหาแบบ LIKE ..$regex: name, $options: 'i'
         const nameFilter = name ? { name: { $regex: name, $options: 'i' } } : {};
+        // ถ้าไม่มีค่าที่ส่งมาจาก Url ให้มีค่าเท่ากับค่าออบเจคว่างๆ
+        const categoryFilter = category ? { category } : {};
 
         // นำค่ามี filter
-        const product = await Product.find({ ...sellerFilter, ...nameFilter }).populate(
+        const product = await Product.find({
+            ...sellerFilter,
+            ...nameFilter,
+            ...categoryFilter
+        }).populate(
             'seller', 'seller.name seller.logo'
         );
         res.send(product);
     })
 );
+
+productRouter.get('/categories', expressAsyncHandler(async (req, res) => {
+    const categories = await Product.find().distinct('category')
+    res.send(categories);
+}));
 
 productRouter.get(
     '/seed',
