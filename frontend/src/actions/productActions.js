@@ -20,7 +20,15 @@ import {
     PRODUCT_UPDATE_SUCCESS,
 } from "../constants/productConstants";
 
-export const listProducts = ({ seller = '', name = '', category = '' }) => async (dispatch) => {
+export const listProducts = ({
+    seller = '',
+    name = '',
+    category = '',
+    order = '',
+    min = 0,
+    max = 0,
+    rating = 0,
+}) => async (dispatch) => {
     // serler id ผู้ขาย
     // name คือ ค้นหาสินค้า
     // alert(seller)
@@ -29,7 +37,7 @@ export const listProducts = ({ seller = '', name = '', category = '' }) => async
     })
     try {
         // ส่ง name และ serller id เพื่อไป filter
-        const { data } = await axios.get(`/api/products?seller=${seller}&name=${name}&category=${category}`);
+        const { data } = await axios.get(`/api/products?seller=${seller}&name=${name}&category=${category}&min=${min}&max=${max}&rating=${rating}&order=${order}`);
         dispatch({
             type: PRODUCT_LIST_SUCCESS,
             payload: data
