@@ -137,4 +137,40 @@ productRouter.delete(
     })
 );
 
+
+productRouter.post(
+    '/:id/reviews',
+    expressAsyncHandler(async (req, res) => {
+        const productId = req.params.id;
+        //ค้นหา product = mongoose.Schema 
+        const product = await Product.findById(productId)
+        if (product) {
+            if (product.reviews.find((x) => x.name === req.body.name)) {
+                return res
+                    .status(400)
+                    .send({ message: 'You already submitted a review' });
+            }
+            // สร้างออกเจ็ค mongoose.Schema
+            const review = {
+                name: req.body.name,
+                rating: Number(req.body.rating),
+                comment: req.body.comment,
+            };
+            // เอาค่าที่ได้ไปต่อท่้าย
+            product.reviews.push(review)
+            product.numReviews = product.reviews.length;
+            //หาค่าเฉลีย แบบ reduce
+            product.rating = product.reviews.reduce((a, c) => c.rating + a, 0) / product.reviews.length;
+            //บันทึก
+            const updateProduct = await product.save();
+
+            res.status(201).send({
+                message: 'Review Created',
+                product: updateProduct.reviews[updateProduct.reviews.length - 1]
+            });
+        } else {
+            res.status(404).send({ message: 'Product not found' });
+        }
+    }))
+
 export default productRouter;
