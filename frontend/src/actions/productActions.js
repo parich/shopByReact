@@ -151,6 +151,7 @@ export const deleteProduct = (productId) => async (dispatch, getState) => {
 export const createReview = (productId, review) => async (dispatch, getState) => {
     dispatch({ type: PRODUCT_REVIEW_CREATE_REQUEST });
     const { userSignin: { userInfo }, } = getState();
+    //alert(JSON.stringify(review))
     try {
         const { data } = await axios.post(
             `/api/products/${productId}/reviews`,

@@ -160,7 +160,9 @@ productRouter.post(
             product.reviews.push(review)
             product.numReviews = product.reviews.length;
             //หาค่าเฉลีย แบบ reduce
+            //console.log(product.reviews);
             product.rating = product.reviews.reduce((a, c) => c.rating + a, 0) / product.reviews.length;
+            //console.log(product.rating)
             //บันทึก
             const updateProduct = await product.save();
 
