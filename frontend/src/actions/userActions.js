@@ -78,7 +78,7 @@ export const detailsUser = (userId) => async (dispatch, getState) => {
     try {
         // send to server
         const { data } = await axios.get(`/api/users/${userId}`, {
-            headers: { Authorization: `zxrAcho${userInfo.token}` }
+            headers: { Authorization: `zxrAcho${userInfo?.token}` }
         });
         // dispatch
         dispatch({ type: USER_DETAILS_SUCCESS, payload: data });

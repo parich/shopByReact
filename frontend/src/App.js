@@ -28,6 +28,7 @@ import { useEffect, useState } from 'react';
 import { listProductCategories } from './actions/productActions';
 import LoadingBox from './components/LoadingBox';
 import MessageBox from './components/MessageBox';
+import MapScreen from './screens/MapScreen';
 
 function App() {
 
@@ -183,6 +184,7 @@ function App() {
           <AdminRoute path="/user/:id/edit" component={UserEditScreen}></AdminRoute>
           <SellerRoute path='/productlist/seller' component={ProductListScreen}></SellerRoute>
           <SellerRoute path='/orderlist/seller' component={OrderListScreen}></SellerRoute>
+          <PrivateRoute path="/map" component={MapScreen}></PrivateRoute>
         </main>
 
         <footer className="row center">All right resered</footer>
